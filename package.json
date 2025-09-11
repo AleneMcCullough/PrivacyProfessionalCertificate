@@ -1,0 +1,19 @@
+{
+  "name": "privacy-professional-certificate",
+  "version": "1.0.0",
+  "description": "Privacy-focused professional certificate system using FHE",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js --network sepolia",
+    "test": "npx hardhat test",
+    "node": "npx hardhat node"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@fhevm/solidity": "^0.5.0"
+  }
+}

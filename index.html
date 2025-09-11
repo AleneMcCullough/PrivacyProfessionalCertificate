@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Professional Certificate System</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏆</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(26, 32, 44, 0.85);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 1px rgba(79, 209, 197, 0.3);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(79, 209, 197, 0.1);
+        }
+
+        h1 {
+            color: #4fd1c5;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(79, 209, 197, 0.3);
+        }
+
+        .subtitle {
+            color: #cbd5e0;
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0.5rem;
+        }
+
+        .status.connected {
+            background: linear-gradient(135deg, #38b2ac, #319795);
+            color: white;
+            box-shadow: 0 4px 15px rgba(56, 178, 172, 0.3);
+        }
+
+        .status.disconnected {
+            background: linear-gradient(135deg, #fc8181, #f56565);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+        }
+
+        .connection-section {
+            background: rgba(26, 32, 44, 0.85);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 1px rgba(79, 209, 197, 0.3);
+            backdrop-filter: blur(16px);
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(79, 209, 197, 0.1);
+        }
+
+        .connect-btn {
+            background: linear-gradient(135deg, #4fd1c5, #38b2ac);
+            color: #1a202c;
+            padding: 1.1rem 2.5rem;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 1.15rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(79, 209, 197, 0.3);
+        }
+
+        .connect-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(79, 209, 197, 0.5);
+            background: linear-gradient(135deg, #5fe3d6, #4fd1c5);
+        }
+
+        .connect-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: rgba(26, 32, 44, 0.85);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 1px rgba(79, 209, 197, 0.2);
+            backdrop-filter: blur(16px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(79, 209, 197, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 20px rgba(79, 209, 197, 0.2);
+            border-color: rgba(79, 209, 197, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .icon-certificate { background: linear-gradient(135deg, #4fd1c5, #38b2ac); }
+        .icon-request { background: linear-gradient(135deg, #68d391, #48bb78); }
+        .icon-verify { background: linear-gradient(135deg, #f6ad55, #ed8936); }
+        .icon-manage { background: linear-gradient(135deg, #b794f4, #9f7aea); }
+
+        .card h3 {
+            color: #e2e8f0;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: #cbd5e0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid rgba(79, 209, 197, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: rgba(0, 0, 0, 0.3);
+            color: #e2e8f0;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4fd1c5;
+            box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4fd1c5, #38b2ac);
+            color: #1a202c;
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(79, 209, 197, 0.3);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 209, 197, 0.5);
+            background: linear-gradient(135deg, #5fe3d6, #4fd1c5);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .info-section {
+            background: rgba(26, 32, 44, 0.85);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 1px rgba(79, 209, 197, 0.2);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(79, 209, 197, 0.1);
+        }
+
+        .certificate-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .certificate-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #4fd1c5;
+            padding: 1.2rem;
+            border-radius: 0 12px 12px 0;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(79, 209, 197, 0.1);
+            border-left: 4px solid #4fd1c5;
+        }
+
+        .certificate-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 6px 20px rgba(79, 209, 197, 0.2);
+            border-left-color: #5fe3d6;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .certificate-title {
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 0.6rem;
+            font-size: 1.05rem;
+        }
+
+        .certificate-details {
+            font-size: 0.92rem;
+            color: #a0aec0;
+            line-height: 1.6;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(66, 153, 225, 0.1);
+            border-radius: 10px;
+            color: #4299e1;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            border-left: 4px solid #e53e3e;
+        }
+
+        .success {
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            border-left: 4px solid #48bb78;
+        }
+
+        .network-info {
+            background: rgba(79, 209, 197, 0.15);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+            backdrop-filter: blur(8px);
+            text-align: center;
+            border: 1px solid rgba(79, 209, 197, 0.2);
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .library-status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            color: white;
+            backdrop-filter: blur(5px);
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .library-status.loading {
+            background: rgba(255, 165, 0, 0.2);
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        .library-status.success {
+            background: rgba(72, 187, 120, 0.2);
+        }
+
+        .library-status.error {
+            background: rgba(229, 62, 62, 0.2);
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.6; }
+            to { opacity: 1; }
+        }
+
+        .certificate-verification {
+            margin-top: 1rem;
+            padding: 1.3rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 2px solid rgba(79, 209, 197, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            background: rgba(79, 209, 197, 0.15);
+            padding: 1.3rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(79, 209, 197, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: rgba(79, 209, 197, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #4fd1c5;
+            text-shadow: 0 2px 10px rgba(79, 209, 197, 0.3);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #cbd5e0;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Privacy Professional Certificate System</h1>
+            <p class="subtitle">Confidential professional certification using Fully Homomorphic Encryption</p>
+            <div class="status disconnected" id="networkStatus">Not Connected</div>
+        </div>
+
+        <div class="library-status loading" id="libraryStatus">Loading ethers.js library...</div>
+
+        <!-- Connection Section -->
+        <div class="connection-section" id="connectionSection">
+            <h2>Connect Your Wallet</h2>
+            <p>Please connect MetaMask to access the Privacy Professional Certificate System</p>
+            <button class="connect-btn" id="connectWalletBtn" disabled>Loading...</button>
+
+            <div class="error" id="connectionError"></div>
+            <div class="success" id="connectionSuccess"></div>
+            <div class="loading" id="connectionLoading">
+                <p>🔄 Connecting to wallet and Sepolia testnet...</p>
+            </div>
+        </div>
+
+        <!-- Network Info (hidden until connected) -->
+        <div class="network-info hidden" id="networkInfo">
+            <strong>Network:</strong> <span id="currentNetwork">Not connected</span> |
+            <strong>Account:</strong> <span id="currentAccount">Not connected</span> |
+            <strong>Balance:</strong> <span id="accountBalance">0 ETH</span>
+        </div>
+
+        <!-- Contract Stats (hidden until connected) -->
+        <div class="card hidden" id="contractStats">
+            <div class="card-header">
+                <div class="card-icon" style="background: #9f7aea;">📊</div>
+                <h3>Contract Statistics</h3>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCertificates">0</div>
+                    <div class="stat-label">Total Certificates</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalRequests">0</div>
+                    <div class="stat-label">Total Requests</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="userCertCount">0</div>
+                    <div class="stat-label">My Certificates</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content (hidden until connected) -->
+        <div class="main-content hidden" id="mainContent">
+            <!-- Request Certificate Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-request">📋</div>
+                    <h3>Request Certificate</h3>
+                </div>
+
+                <div class="error" id="requestError"></div>
+                <div class="success" id="requestSuccess"></div>
+
+                <form id="requestForm">
+                    <div class="form-group">
+                        <label for="profession">Profession</label>
+                        <select id="profession" required>
+                            <option value="">Select Profession</option>
+                            <option value="Software Engineer">Software Engineer (Min: 75 score, Level 3)</option>
+                            <option value="Data Scientist">Data Scientist (Min: 80 score, Level 4)</option>
+                            <option value="Cybersecurity Specialist">Cybersecurity Specialist (Min: 85 score, Level 4)</option>
+                            <option value="Project Manager">Project Manager (Min: 70 score, Level 3)</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="score">Professional Score (0-100)</label>
+                        <input type="number" id="score" min="0" max="100" required placeholder="Enter your professional score">
+                        <small style="color: #718096;">This will be encrypted using FHE</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="level">Professional Level (1-10)</label>
+                        <input type="number" id="level" min="1" max="10" required placeholder="Enter your professional level">
+                        <small style="color: #718096;">This will be encrypted using FHE</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="evidence">Evidence/Portfolio</label>
+                        <textarea id="evidence" required placeholder="Provide links or descriptions of your professional work, certifications, projects, etc."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" id="requestBtn">Submit Certificate Request</button>
+                </form>
+
+                <div class="loading" id="requestLoading">
+                    <p>📝 Processing your certificate request...</p>
+                </div>
+            </div>
+
+            <!-- Verify Certificate Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-verify">🔍</div>
+                    <h3>Verify Certificate</h3>
+                </div>
+
+                <div class="error" id="verifyError"></div>
+                <div class="success" id="verifySuccess"></div>
+
+                <form id="verifyForm">
+                    <div class="form-group">
+                        <label for="certificateId">Certificate ID</label>
+                        <input type="number" id="certificateId" min="1" required placeholder="Enter certificate ID to verify">
+                    </div>
+
+                    <button type="submit" class="btn" id="verifyBtn">Verify Certificate</button>
+                </form>
+
+                <div class="loading" id="verifyLoading">
+                    <p>🔍 Verifying certificate...</p>
+                </div>
+
+                <div class="certificate-verification hidden" id="certificateDetails">
+                    <h4>Certificate Details</h4>
+                    <div id="certificateInfo"></div>
+                </div>
+            </div>
+
+            <!-- My Certificates Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-certificate">🏆</div>
+                    <h3>My Certificates</h3>
+                </div>
+
+                <button class="btn" id="loadCertificatesBtn">Load My Certificates</button>
+
+                <div class="loading" id="certificatesLoading">
+                    <p>📜 Loading your certificates...</p>
+                </div>
+
+                <div class="certificate-list" id="certificatesList">
+                    <p style="text-align: center; color: #718096; padding: 2rem;">Click "Load My Certificates" to view your certificates</p>
+                </div>
+            </div>
+
+            <!-- Admin Panel Card (Only for authorized users) -->
+            <div class="card hidden" id="adminPanel">
+                <div class="card-header">
+                    <div class="card-icon icon-manage">⚙️</div>
+                    <h3>Admin Panel</h3>
+                </div>
+
+                <div class="error" id="adminError"></div>
+                <div class="success" id="adminSuccess"></div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <button class="btn" id="loadRequestsBtn" style="margin-bottom: 1rem;">Load Pending Requests</button>
+
+                    <div class="loading" id="requestsLoading">
+                        <p>📋 Loading certification requests...</p>
+                    </div>
+
+                    <div id="requestsList"></div>
+                </div>
+
+                <form id="processRequestForm">
+                    <div class="form-group">
+                        <label for="requestId">Request ID to Process</label>
+                        <input type="number" id="requestId" min="1" required placeholder="Enter request ID">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="issuerName">Issuer Organization Name</label>
+                        <input type="text" id="issuerName" required placeholder="Enter your organization name">
+                    </div>
+
+                    <button type="submit" class="btn" id="processBtn">Process & Approve Request</button>
+                </form>
+
+                <div class="loading" id="adminLoading">
+                    <p>⚙️ Processing certification request...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section (always visible) -->
+        <div class="info-section">
+            <h3>About Privacy Professional Certificate System</h3>
+            <p>This system uses Fully Homomorphic Encryption (FHE) to protect sensitive professional information while maintaining the ability to verify credentials. Your scores and levels are encrypted and only accessible to authorized parties.</p>
+
+            <h4 style="margin-top: 1.5rem;">Features:</h4>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.6;">
+                <li>🔒 <strong>Encrypted Data:</strong> Professional scores and levels protected with FHE</li>
+                <li>📋 <strong>Secure Requests:</strong> Tamper-proof certification process</li>
+                <li>🏆 <strong>Digital Certificates:</strong> Blockchain-based verifiable credentials</li>
+                <li>🔍 <strong>Public Verification:</strong> Verify authenticity without revealing sensitive data</li>
+                <li>⚙️ <strong>Admin System:</strong> Authorized issuer management</li>
+                <li>🌐 <strong>Sepolia Testnet:</strong> Safe testing environment</li>
+            </ul>
+
+            <h4 style="margin-top: 1.5rem;">How it Works:</h4>
+            <ol style="margin-left: 1.5rem; margin-top: 0.5rem; line-height: 1.6;">
+                <li><strong>Request:</strong> Submit your professional credentials (encrypted)</li>
+                <li><strong>Review:</strong> Authorized issuers evaluate your evidence</li>
+                <li><strong>Issue:</strong> Approved certificates are minted on blockchain</li>
+                <li><strong>Verify:</strong> Anyone can verify certificate authenticity</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Load ethers.js with multiple CDN fallbacks -->
+    <script>
+        // CDN URLs in order of preference
+        const ETHERS_CDNS = [
+            'https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js',
+            'https://unpkg.com/ethers@6.13.4/dist/ethers.umd.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js'
+        ];
+
+        let currentCDNIndex = 0;
+        let appState = {
+            provider: null,
+            signer: null,
+            contract: null,
+            userAddress: '',
+            isConnected: false,
+            isAdmin: false,
+            contractStats: {
+                totalCertificates: 0,
+                totalRequests: 0,
+                userCertCount: 0
+            }
+        };
+
+        function loadEthersScript() {
+            return new Promise((resolve, reject) => {
+                if (currentCDNIndex >= ETHERS_CDNS.length) {
+                    reject(new Error('All CDN sources failed to load ethers.js'));
+                    return;
+                }
+
+                const script = document.createElement('script');
+                const currentCDN = ETHERS_CDNS[currentCDNIndex];
+
+                console.log(`Attempting to load ethers.js from: ${currentCDN}`);
+
+                script.src = currentCDN;
+                script.onload = () => {
+                    console.log(`Successfully loaded ethers.js from: ${currentCDN}`);
+                    resolve();
+                };
+
+                script.onerror = () => {
+                    console.warn(`Failed to load ethers.js from: ${currentCDN}`);
+                    document.head.removeChild(script);
+                    currentCDNIndex++;
+                    loadEthersScript().then(resolve).catch(reject);
+                };
+
+                document.head.appendChild(script);
+            });
+        }
+
+        // Load ethers.js and initialize app
+        loadEthersScript()
+            .then(() => {
+                // Check if ethers is available
+                if (typeof ethers === 'undefined') {
+                    throw new Error('ethers is not defined after loading script');
+                }
+
+                // Update library status
+                const libraryStatus = document.getElementById('libraryStatus');
+                libraryStatus.textContent = '✅ ethers.js loaded successfully';
+                libraryStatus.className = 'library-status success';
+
+                // Enable connect button
+                const connectBtn = document.getElementById('connectWalletBtn');
+                connectBtn.textContent = 'Connect MetaMask';
+                connectBtn.disabled = false;
+
+                // Initialize the app
+                initializeApp();
+            })
+            .catch((error) => {
+                console.error('Failed to load ethers.js:', error);
+
+                // Update library status
+                const libraryStatus = document.getElementById('libraryStatus');
+                libraryStatus.textContent = '❌ Failed to load ethers.js library';
+                libraryStatus.className = 'library-status error';
+
+                // Show error message
+                showError('connectionError', 'Failed to load required libraries. Please refresh the page or check your internet connection.');
+            });
+
+        function initializeApp() {
+            console.log('Initializing Privacy Professional Certificate System...');
+
+            // Contract configuration
+            const CONTRACT_ADDRESS = "0xc9B0CD3F8b1fEB158c66d9a5266D054EE89aF153";
+            const SEPOLIA_CHAIN_ID = "0xaa36a7"; // 11155111 in hex
+            const CONTRACT_ABI = [
+                "function requestCertification(string memory _profession, uint64 _score, uint8 _level, string memory _evidence) external",
+                "function processCertificationRequest(uint256 _requestId, string memory _issuerName) external",
+                "function verifyCertificate(uint256 _certificateId) external view returns (address holder, string memory profession, bool isValid, uint256 issueDate, uint256 expiryDate, string memory issuer, bytes32 credentialHash)",
+                "function getHolderCertificates(address _holder) external view returns (uint256[] memory)",
+                "function getCertificateCount() external view returns (uint256)",
+                "function getRequestCount() external view returns (uint256)",
+                "function getProfessionRequirements(string memory _profession) external view returns (uint256 minScore, uint8 minLevel)",
+                "function authorizedIssuers(address) external view returns (bool)",
+                "function owner() external view returns (address)",
+                "function certificationRequests(uint256) external view returns (address applicant, string profession, bool isProcessed, bool isApproved, uint256 requestTime, string evidence)",
+                "event CertificateIssued(uint256 indexed certificateId, address indexed holder, string profession)",
+                "event CertificationRequested(uint256 indexed requestId, address indexed applicant, string profession)",
+                "event CertificationApproved(uint256 indexed requestId, uint256 indexed certificateId)"
+            ];
+
+            // Wallet connection flow
+            async function connectWallet() {
+                try {
+                    showLoading('connectionLoading', true);
+                    hideMessages('connectionError', 'connectionSuccess');
+
+                    // Step 1: Check for MetaMask
+                    if (typeof window.ethereum === 'undefined') {
+                        throw new Error('MetaMask not found. Please install MetaMask to continue.');
+                    }
+
+                    // Step 2: Request account access
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                    // Step 3: Create provider and signer
+                    appState.provider = new ethers.BrowserProvider(window.ethereum);
+                    appState.signer = await appState.provider.getSigner();
+                    appState.userAddress = await appState.signer.getAddress();
+
+                    // Step 4: Check and switch to Sepolia if needed
+                    const network = await appState.provider.getNetwork();
+                    console.log('Current network:', network.chainId.toString());
+
+                    if (network.chainId.toString() !== "11155111") {
+                        console.log('Switching to Sepolia...');
+                        await switchToSepolia();
+                    }
+
+                    // Step 5: Initialize contract
+                    appState.contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, appState.signer);
+                    console.log('Contract initialized:', CONTRACT_ADDRESS);
+
+                    // Step 6: Update UI state
+                    await updateConnectionState();
+
+                    // Step 7: Load contract stats and check admin status
+                    await Promise.all([
+                        loadContractStats(),
+                        checkAdminStatus()
+                    ]);
+
+                    showSuccess('connectionSuccess', 'Successfully connected to Sepolia testnet! ✅');
+
+                    // Hide connection section and show main content
+                    document.getElementById('connectionSection').classList.add('hidden');
+                    document.getElementById('networkInfo').classList.remove('hidden');
+                    document.getElementById('mainContent').classList.remove('hidden');
+                    document.getElementById('contractStats').classList.remove('hidden');
+
+                    appState.isConnected = true;
+
+                } catch (error) {
+                    console.error('Connection error:', error);
+                    showError('connectionError', error.message);
+                    appState.isConnected = false;
+                } finally {
+                    showLoading('connectionLoading', false);
+                }
+            }
+
+            // Switch to Sepolia testnet
+            async function switchToSepolia() {
+                try {
+                    // Try to switch to Sepolia
+                    await window.ethereum.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: SEPOLIA_CHAIN_ID }],
+                    });
+                } catch (switchError) {
+                    // If Sepolia is not added, add it
+                    if (switchError.code === 4902) {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: SEPOLIA_CHAIN_ID,
+                                chainName: 'Sepolia Test Network',
+                                nativeCurrency: {
+                                    name: 'SepoliaETH',
+                                    symbol: 'ETH',
+                                    decimals: 18
+                                },
+                                rpcUrls: ['https://sepolia.gateway.tenderly.co'],
+                                blockExplorerUrls: ['https://sepolia.etherscan.io/']
+                            }]
+                        });
+                    } else {
+                        throw switchError;
+                    }
+                }
+            }
+
+            // Update connection state
+            async function updateConnectionState() {
+                try {
+                    const network = await appState.provider.getNetwork();
+                    const balance = await appState.provider.getBalance(appState.userAddress);
+
+                    document.getElementById('currentNetwork').textContent = `Sepolia (${network.chainId})`;
+                    document.getElementById('currentAccount').textContent = `${appState.userAddress.slice(0, 6)}...${appState.userAddress.slice(-4)}`;
+                    document.getElementById('accountBalance').textContent = `${ethers.formatEther(balance).slice(0, 6)} ETH`;
+
+                    const networkStatus = document.getElementById('networkStatus');
+                    networkStatus.textContent = 'Connected to Sepolia';
+                    networkStatus.className = 'status connected';
+                } catch (error) {
+                    console.error('Network info error:', error);
+                }
+            }
+
+            // Load contract statistics
+            async function loadContractStats() {
+                try {
+                    console.log('Loading contract stats...');
+                    const [totalCertificates, totalRequests, userCerts] = await Promise.all([
+                        appState.contract.getCertificateCount(),
+                        appState.contract.getRequestCount(),
+                        appState.contract.getHolderCertificates(appState.userAddress)
+                    ]);
+
+                    appState.contractStats = {
+                        totalCertificates: Number(totalCertificates),
+                        totalRequests: Number(totalRequests),
+                        userCertCount: userCerts.length
+                    };
+
+                    // Update UI
+                    document.getElementById('totalCertificates').textContent = appState.contractStats.totalCertificates;
+                    document.getElementById('totalRequests').textContent = appState.contractStats.totalRequests;
+                    document.getElementById('userCertCount').textContent = appState.contractStats.userCertCount;
+
+                    console.log('Contract stats loaded:', appState.contractStats);
+                } catch (error) {
+                    console.error('Error loading contract stats:', error);
+                }
+            }
+
+            async function checkAdminStatus() {
+                try {
+                    const [isAuthorized, owner] = await Promise.all([
+                        appState.contract.authorizedIssuers(appState.userAddress),
+                        appState.contract.owner()
+                    ]);
+
+                    appState.isAdmin = isAuthorized || appState.userAddress.toLowerCase() === owner.toLowerCase();
+
+                    if (appState.isAdmin) {
+                        document.getElementById('adminPanel').classList.remove('hidden');
+                        console.log('Admin access granted');
+                    }
+                } catch (error) {
+                    console.error('Admin check error:', error);
+                }
+            }
+
+            // Event Listeners
+            document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
+            document.getElementById('requestForm').addEventListener('submit', handleCertificationRequest);
+            document.getElementById('verifyForm').addEventListener('submit', handleVerifyCertificate);
+            document.getElementById('loadCertificatesBtn').addEventListener('click', loadMyCertificates);
+            document.getElementById('processRequestForm').addEventListener('submit', handleProcessRequest);
+            document.getElementById('loadRequestsBtn')?.addEventListener('click', loadPendingRequests);
+
+            // Form Handlers
+            async function handleCertificationRequest(e) {
+                e.preventDefault();
+                console.log('Handling certification request...');
+
+                if (!appState.isConnected) {
+                    showError('requestError', 'Please connect your wallet first');
+                    return;
+                }
+
+                const profession = document.getElementById('profession').value;
+                const score = parseInt(document.getElementById('score').value);
+                const level = parseInt(document.getElementById('level').value);
+                const evidence = document.getElementById('evidence').value;
+
+                try {
+                    showLoading('requestLoading', true);
+                    hideMessages('requestError', 'requestSuccess');
+
+                    console.log('Submitting request:', { profession, score, level, evidence: evidence.substring(0, 50) + '...' });
+
+                    const tx = await appState.contract.requestCertification(profession, score, level, evidence);
+                    console.log('Transaction sent:', tx.hash);
+
+                    await tx.wait();
+                    console.log('Transaction confirmed');
+
+                    showSuccess('requestSuccess', `Certification request submitted successfully! 🎉\nTransaction: ${tx.hash.slice(0, 10)}...`);
+                    document.getElementById('requestForm').reset();
+
+                    // Refresh stats
+                    await loadContractStats();
+
+                } catch (error) {
+                    console.error('Request error:', error);
+                    showError('requestError', `Request failed: ${error.reason || error.message}`);
+                } finally {
+                    showLoading('requestLoading', false);
+                }
+            }
+
+            async function handleVerifyCertificate(e) {
+                e.preventDefault();
+                console.log('Handling certificate verification...');
+
+                if (!appState.isConnected) {
+                    showError('verifyError', 'Please connect your wallet first');
+                    return;
+                }
+
+                const certificateId = parseInt(document.getElementById('certificateId').value);
+
+                try {
+                    showLoading('verifyLoading', true);
+                    hideMessages('verifyError', 'verifySuccess');
+                    document.getElementById('certificateDetails').classList.add('hidden');
+
+                    console.log('Verifying certificate ID:', certificateId);
+
+                    const result = await appState.contract.verifyCertificate(certificateId);
+                    console.log('Certificate verified:', result);
+
+                    const isExpired = Number(result.expiryDate) * 1000 < Date.now();
+                    const statusText = result.isValid ? (isExpired ? 'Valid but Expired' : 'Valid') : 'Invalid';
+                    const statusColor = result.isValid ? (isExpired ? '#ff9500' : '#48bb78') : '#e53e3e';
+
+                    const details = `
+                        <div style="display: grid; gap: 0.5rem;">
+                            <p><strong>Holder:</strong> <code>${result.holder}</code></p>
+                            <p><strong>Profession:</strong> ${result.profession}</p>
+                            <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span></p>
+                            <p><strong>Issue Date:</strong> ${new Date(Number(result.issueDate) * 1000).toLocaleDateString()}</p>
+                            <p><strong>Expiry Date:</strong> ${new Date(Number(result.expiryDate) * 1000).toLocaleDateString()}</p>
+                            <p><strong>Issuer:</strong> ${result.issuer}</p>
+                            <p><strong>Credential Hash:</strong> <code>${result.credentialHash}</code></p>
+                        </div>
+                    `;
+
+                    document.getElementById('certificateInfo').innerHTML = details;
+                    document.getElementById('certificateDetails').classList.remove('hidden');
+
+                    showSuccess('verifySuccess', 'Certificate verified successfully! ✅');
+                } catch (error) {
+                    console.error('Verify error:', error);
+                    showError('verifyError', `Verification failed: ${error.reason || error.message}`);
+                    document.getElementById('certificateDetails').classList.add('hidden');
+                } finally {
+                    showLoading('verifyLoading', false);
+                }
+            }
+
+            async function loadMyCertificates() {
+                console.log('Loading user certificates...');
+
+                if (!appState.isConnected) {
+                    showError('certificatesList', 'Please connect your wallet first');
+                    return;
+                }
+
+                try {
+                    showLoading('certificatesLoading', true);
+
+                    const certificateIds = await appState.contract.getHolderCertificates(appState.userAddress);
+                    console.log('User certificates:', certificateIds);
+
+                    const certificatesList = document.getElementById('certificatesList');
+                    certificatesList.innerHTML = '';
+
+                    if (certificateIds.length === 0) {
+                        certificatesList.innerHTML = '<p style="text-align: center; color: #718096; padding: 2rem;">No certificates found for your address.</p>';
+                        return;
+                    }
+
+                    for (const id of certificateIds) {
+                        try {
+                            const cert = await appState.contract.verifyCertificate(id);
+                            console.log(`Certificate ${id}:`, cert);
+
+                            const isExpired = Number(cert.expiryDate) * 1000 < Date.now();
+                            const statusText = cert.isValid ? (isExpired ? 'Expired' : 'Valid') : 'Invalid';
+                            const statusColor = cert.isValid ? (isExpired ? '#ff9500' : '#48bb78') : '#e53e3e';
+
+                            const certElement = document.createElement('div');
+                            certElement.className = 'certificate-item';
+                            certElement.innerHTML = `
+                                <div class="certificate-title">🏆 Certificate #${id}</div>
+                                <div class="certificate-details">
+                                    <strong>Profession:</strong> ${cert.profession}<br>
+                                    <strong>Status:</strong> <span style="color: ${statusColor}; font-weight: bold;">${statusText}</span><br>
+                                    <strong>Issued:</strong> ${new Date(Number(cert.issueDate) * 1000).toLocaleDateString()}<br>
+                                    <strong>Expires:</strong> ${new Date(Number(cert.expiryDate) * 1000).toLocaleDateString()}<br>
+                                    <strong>Issuer:</strong> ${cert.issuer}
+                                </div>
+                            `;
+                            certificatesList.appendChild(certElement);
+                        } catch (error) {
+                            console.error(`Error loading certificate ${id}:`, error);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Load certificates error:', error);
+                    document.getElementById('certificatesList').innerHTML = '<p style="color: #e53e3e;">Error loading certificates.</p>';
+                } finally {
+                    showLoading('certificatesLoading', false);
+                }
+            }
+
+            async function loadPendingRequests() {
+                console.log('Loading pending requests...');
+
+                if (!appState.isAdmin) {
+                    showError('adminError', 'Admin access required');
+                    return;
+                }
+
+                try {
+                    showLoading('requestsLoading', true);
+
+                    const totalRequests = await appState.contract.getRequestCount();
+                    console.log('Total requests:', Number(totalRequests));
+
+                    const requestsList = document.getElementById('requestsList');
+                    requestsList.innerHTML = '';
+
+                    if (Number(totalRequests) === 0) {
+                        requestsList.innerHTML = '<p style="text-align: center; color: #718096;">No requests found.</p>';
+                        return;
+                    }
+
+                    let pendingCount = 0;
+                    for (let i = 1; i <= Number(totalRequests); i++) {
+                        try {
+                            const request = await appState.contract.certificationRequests(i);
+                            console.log(`Request ${i}:`, request);
+
+                            if (!request.isProcessed) {
+                                pendingCount++;
+                                const requestElement = document.createElement('div');
+                                requestElement.className = 'certificate-item';
+                                requestElement.style.borderLeftColor = '#ed8936';
+                                requestElement.innerHTML = `
+                                    <div class="certificate-title">📋 Request #${i} - ${request.profession}</div>
+                                    <div class="certificate-details">
+                                        <strong>Applicant:</strong> ${request.applicant}<br>
+                                        <strong>Profession:</strong> ${request.profession}<br>
+                                        <strong>Submitted:</strong> ${new Date(Number(request.requestTime) * 1000).toLocaleDateString()}<br>
+                                        <strong>Evidence:</strong> ${request.evidence.substring(0, 100)}${request.evidence.length > 100 ? '...' : ''}
+                                    </div>
+                                `;
+                                requestsList.appendChild(requestElement);
+                            }
+                        } catch (error) {
+                            console.error(`Error loading request ${i}:`, error);
+                        }
+                    }
+
+                    if (pendingCount === 0) {
+                        requestsList.innerHTML = '<p style="text-align: center; color: #718096;">No pending requests.</p>';
+                    }
+
+                } catch (error) {
+                    console.error('Load requests error:', error);
+                    document.getElementById('requestsList').innerHTML = '<p style="color: #e53e3e;">Error loading requests.</p>';
+                } finally {
+                    showLoading('requestsLoading', false);
+                }
+            }
+
+            async function handleProcessRequest(e) {
+                e.preventDefault();
+                console.log('Processing certification request...');
+
+                if (!appState.isConnected || !appState.isAdmin) {
+                    showError('adminError', 'Admin access required');
+                    return;
+                }
+
+                const requestId = parseInt(document.getElementById('requestId').value);
+                const issuerName = document.getElementById('issuerName').value;
+
+                try {
+                    showLoading('adminLoading', true);
+                    hideMessages('adminError', 'adminSuccess');
+
+                    console.log('Processing request:', { requestId, issuerName });
+
+                    const tx = await appState.contract.processCertificationRequest(requestId, issuerName);
+                    console.log('Transaction sent:', tx.hash);
+
+                    await tx.wait();
+                    console.log('Transaction confirmed');
+
+                    showSuccess('adminSuccess', `Request #${requestId} processed successfully! 🎉\nTransaction: ${tx.hash.slice(0, 10)}...`);
+                    document.getElementById('processRequestForm').reset();
+
+                    // Refresh stats and requests
+                    await Promise.all([
+                        loadContractStats(),
+                        loadPendingRequests()
+                    ]);
+
+                } catch (error) {
+                    console.error('Process error:', error);
+                    showError('adminError', `Processing failed: ${error.reason || error.message}`);
+                } finally {
+                    showLoading('adminLoading', false);
+                }
+            }
+
+            // Handle account and network changes
+            if (window.ethereum) {
+                window.ethereum.on('accountsChanged', (accounts) => {
+                    console.log('Accounts changed:', accounts);
+                    if (accounts.length === 0) {
+                        // User disconnected
+                        appState.isConnected = false;
+                        document.getElementById('connectionSection').classList.remove('hidden');
+                        document.getElementById('networkInfo').classList.add('hidden');
+                        document.getElementById('mainContent').classList.add('hidden');
+                        document.getElementById('contractStats').classList.add('hidden');
+
+                        const networkStatus = document.getElementById('networkStatus');
+                        networkStatus.textContent = 'Not Connected';
+                        networkStatus.className = 'status disconnected';
+                    } else {
+                        // Account changed, reconnect
+                        window.location.reload();
+                    }
+                });
+
+                window.ethereum.on('chainChanged', (chainId) => {
+                    console.log('Chain changed:', chainId);
+                    if (chainId !== SEPOLIA_CHAIN_ID) {
+                        showError('connectionError', 'Please switch to Sepolia testnet');
+                        appState.isConnected = false;
+                    } else {
+                        window.location.reload();
+                    }
+                });
+            }
+
+            // Check if already connected on page load
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                console.log('Wallet already connected, auto-connecting...');
+                connectWallet();
+            }
+
+            console.log('App initialization complete');
+        }
+
+        // Utility functions
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = message;
+            element.style.display = 'block';
+            console.error(`Error (${elementId}):`, message);
+        }
+
+        function showSuccess(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = message;
+            element.style.display = 'block';
+            console.log(`Success (${elementId}):`, message);
+        }
+
+        function hideMessages(...elementIds) {
+            elementIds.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.style.display = 'none';
+            });
+        }
+
+        function showLoading(elementId, show) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.toggle('show', show);
+            }
+        }
+
+        console.log('Privacy Professional Certificate System script loaded');
+    </script>
+</body>
+</html>
